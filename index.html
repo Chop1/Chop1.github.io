@@ -14,8 +14,31 @@
       --line: #e5e7eb;
       --accent: #2563eb;
       --accent-soft: #eff6ff;
+      --nav-bg: rgba(255, 255, 255, 0.82);
+      --button-bg: #ffffff;
+      --mini-bg: #f8fafc;
+      --contact-bg: #111827;
+      --contact-text: #ffffff;
+      --contact-muted: #cbd5e1;
       --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
       --radius: 24px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --line: rgba(255, 255, 255, 0.12);
+      --accent: #60a5fa;
+      --accent-soft: rgba(96, 165, 250, 0.12);
+      --nav-bg: rgba(15, 23, 42, 0.78);
+      --button-bg: #172033;
+      --mini-bg: rgba(255, 255, 255, 0.06);
+      --contact-bg: #ffffff;
+      --contact-text: #111827;
+      --contact-muted: #475569;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
     }
 
     * { box-sizing: border-box; }
@@ -25,8 +48,9 @@
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
-      background: linear-gradient(180deg, #fff 0%, var(--bg) 45%, #fff 100%);
+      background: linear-gradient(180deg, var(--card) 0%, var(--bg) 45%, var(--card) 100%);
       isolation: isolate;
+      transition: background 220ms ease, color 220ms ease;
     }
 
     body::before {
@@ -67,22 +91,30 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(255, 255, 255, 0.82);
+      background: var(--nav-bg);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--line);
     }
 
     .nav-inner {
-      height: 66px;
+      min-height: 66px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 18px;
     }
 
     .brand {
       font-weight: 800;
       letter-spacing: -0.03em;
       text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
 
     .nav-links {
@@ -93,11 +125,94 @@
       font-weight: 650;
     }
 
-    .nav-links a {
-      text-decoration: none;
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--text); }
+
+    .switches {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .nav-links a:hover { color: var(--text); }
+    .switch-control {
+      position: relative;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--button-bg);
+      color: var(--text);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .switch-control:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      border-color: rgba(37, 99, 235, 0.28);
+    }
+
+    .theme-switch,
+    .lang-switch {
+      width: 78px;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      text-align: center;
+    }
+
+    .theme-switch::before,
+    .lang-switch::before {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.24);
+      transition: transform 220ms ease;
+    }
+
+    [data-theme="dark"] .theme-switch::before,
+    [data-lang="fr"] .lang-switch::before {
+      transform: translateX(42px);
+    }
+
+    .switch-icon,
+    .lang-switch span {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      line-height: 1;
+      font-size: 15px;
+    }
+
+    .lang-switch span {
+      font-size: 16px;
+    }
+
+    .theme-switch .switch-icon:first-child,
+    .lang-switch span:first-child {
+      color: white;
+    }
+
+    [data-theme="dark"] .theme-switch .switch-icon:first-child,
+    [data-lang="fr"] .lang-switch span:first-child {
+      color: var(--muted);
+    }
+
+    [data-theme="dark"] .theme-switch .switch-icon:last-child,
+    [data-lang="fr"] .lang-switch span:last-child {
+      color: white;
+    }
 
     .hero {
       display: grid;
@@ -173,7 +288,7 @@
       padding: 0 17px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: #fff;
+      background: var(--button-bg);
       text-decoration: none;
       font-weight: 760;
       transition: transform 160ms ease, box-shadow 160ms ease;
@@ -271,6 +386,12 @@
       transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
     }
 
+    .grid .card {
+      display: flex;
+      flex-direction: column;
+      min-height: 225px;
+    }
+
     .card::before {
       content: "";
       position: absolute;
@@ -289,14 +410,38 @@
       box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
     }
 
-    .card:hover::before {
-      animation: shimmer 900ms ease;
-    }
+    .card:hover::before { animation: shimmer 900ms ease; }
 
     .card h3 {
       margin: 0 0 10px;
       font-size: 22px;
       letter-spacing: -0.035em;
+    }
+
+
+    .news-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: 0 12px 34px rgba(15, 23, 42, 0.05);
+    }
+
+    .news-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .news-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
     .card p, .item span {
@@ -312,15 +457,33 @@
       margin-top: 22px;
     }
 
+    .grid .card-links {
+      margin-top: auto;
+      padding-top: 22px;
+    }
+
     .mini-link {
       min-height: 34px;
       padding: 7px 12px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: #f8fafc;
+      background: var(--mini-bg);
       text-decoration: none;
       font-size: 14px;
       font-weight: 760;
+    }
+
+    .stars {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
     }
 
     .split {
@@ -381,28 +544,33 @@
       align-items: center;
       padding: 30px;
       border-radius: var(--radius);
-      background: #111827;
-      color: white;
+      background: var(--contact-bg);
+      color: var(--contact-text);
       box-shadow: var(--shadow);
     }
 
     .contact-card p {
       max-width: 560px;
       margin: 8px 0 0;
-      color: #cbd5e1;
+      color: var(--contact-muted);
       line-height: 1.6;
     }
 
     .contact-card .btn {
       background: rgba(255, 255, 255, 0.08);
-      color: white;
+      color: var(--contact-text);
       border-color: rgba(255, 255, 255, 0.18);
     }
 
+    [data-theme="dark"] .contact-card .btn {
+      background: rgba(15, 23, 42, 0.04);
+      border-color: rgba(15, 23, 42, 0.12);
+    }
+
     .contact-card .btn.primary {
-      background: white;
-      color: #111827;
-      border-color: white;
+      background: var(--contact-text);
+      color: var(--contact-bg);
+      border-color: var(--contact-text);
     }
 
     footer {
@@ -414,9 +582,15 @@
     @media (max-width: 860px) {
       .hero, .split, .grid { grid-template-columns: 1fr; }
       .portrait { max-width: 280px; }
-      .section-head, .contact-card { display: block; }
+      .section-head, .contact-card, .news-card { display: block; }
       .section-head p { margin-top: 10px; }
       .contact-card .actions { margin-top: 22px; }
+    }
+
+    @media (max-width: 700px) {
+      .nav-inner { align-items: flex-start; padding: 14px 0; }
+      .nav-right { align-items: flex-end; flex-direction: column-reverse; gap: 10px; }
+      .nav-links { gap: 14px; }
     }
 
     @media (max-width: 620px) {
@@ -439,10 +613,23 @@
   <nav>
     <div class="wrap nav-inner">
       <a class="brand" href="#top">Adrien Meyer</a>
-      <div class="nav-links">
-        <a href="#work">Work</a>
-        <a href="#background">Background</a>
-        <a href="#contact">Contact</a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="#work" data-i18n="navWork">Work</a>
+          <a href="#news" data-i18n="navNews">News</a>
+          <a href="#background" data-i18n="navBackground">Background</a>
+          <a href="#contact" data-i18n="navContact">Contact</a>
+        </div>
+        <div class="switches" aria-label="Display controls">
+          <button class="switch-control theme-switch" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+            <span class="switch-icon">☀️</span>
+            <span class="switch-icon">🌙</span>
+          </button>
+          <button class="switch-control lang-switch" id="langToggle" type="button" aria-label="Toggle language" aria-pressed="false">
+            <span title="English">🇬🇧</span>
+            <span title="Français">🇫🇷</span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -450,55 +637,70 @@
   <main id="top" class="wrap">
     <section class="hero">
       <div>
-        <div class="tagline">Medical imaging · Deep learning · Ultrasound</div>
-        <h1>Deep learning for <span class="accent-text">ultrasound</span> imaging.</h1>
-        <p class="lead">
-          PhD student focused on segmentation, annotation, and foundation models for practical clinical imaging workflows.
+        <div class="tagline" data-i18n="tagline">Medical imaging · Deep learning · Ultrasound</div>
+        <h1 data-i18n-html="title">Deep learning for <span class="accent-text">ultrasound</span> imaging.</h1>
+        <p class="lead" data-i18n="lead">
+          I am Adrien Meyer, a PhD student focused on segmentation, annotation, and foundation models for practical clinical imaging workflows.
         </p>
         <div class="actions">
           <a class="btn primary" href="https://scholar.google.com/citations?user=bofF1fcAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
           <a class="btn" href="https://github.com/Chop1" target="_blank" rel="noreferrer">GitHub</a>
-          <a class="btn" href="mailto:ameyer1@unistra.fr">Email</a>
-          <a class="btn" href="assets/cv.pdf" download>Download CV</a>
+          <a class="btn" href="mailto:ameyer1@unistra.fr" data-i18n="email">Email</a>
+          <a class="btn" href="assets/cv.pdf" download data-i18n="downloadCv">Download CV</a>
         </div>
       </div>
 
       <aside class="portrait">
         <img src="assets/profile.jpg" alt="Adrien Meyer profile picture" />
-        <p>PhD student · Medical imaging AI</p>
+        <p data-i18n="portrait">PhD student · Medical imaging AI</p>
       </aside>
+    </section>
+
+    <section id="news">
+      <div class="section-head">
+        <h2 data-i18n="newsTitle">News</h2>
+      </div>
+
+      <div class="news-card">
+        <div>
+          <strong data-i18n="newsItemTitle">S4M at IPCAI 2026</strong>
+          <p data-i18n="newsItemText">S4M will be presented at IPCAI 2026 in Japan — let’s chat there!</p>
+        </div>
+      </div>
     </section>
 
     <section id="work">
       <div class="section-head">
-        <h2>Selected work</h2>
-        <p>Open research on ultrasound segmentation, promptable models, and faster annotation.</p>
+        <h2 data-i18n="workTitle">Selected work</h2>
+        <p data-i18n="workIntro">Open research on ultrasound segmentation, promptable models, and faster annotation.</p>
       </div>
 
       <div class="grid">
         <article class="card">
           <h3>UltraSam</h3>
-          <p>Foundation model for ultrasound segmentation using large open-access datasets.</p>
+          <p data-i18n="ultrasamText">Foundation model for ultrasound segmentation using large open-access datasets.</p>
           <div class="card-links">
-            <a class="mini-link" href="https://arxiv.org/abs/2411.16222" target="_blank" rel="noreferrer">Paper</a>
-            <a class="mini-link" href="https://github.com/CAMMA-public/UltraSam" target="_blank" rel="noreferrer">Code</a>
+            <a class="mini-link" href="https://arxiv.org/abs/2411.16222" target="_blank" rel="noreferrer" data-i18n="paper">Paper</a>
+            <a class="mini-link" href="https://github.com/CAMMA-public/UltraSam" target="_blank" rel="noreferrer" data-i18n="code">Code</a>
+            <span class="stars" data-repo-stars="CAMMA-public/UltraSam">★ —</span>
           </div>
         </article>
 
         <article class="card">
           <h3>S4M</h3>
-          <p>Promptable segmentation with four clinically meaningful points.</p>
+          <p data-i18n="s4mText">Prompting SAM like a sonographer.</p>
           <div class="card-links">
-            <a class="mini-link" href="https://arxiv.org/abs/2503.05534" target="_blank" rel="noreferrer">Paper</a>
-            <a class="mini-link" href="https://github.com/CAMMA-public/S4M" target="_blank" rel="noreferrer">Code</a>
+            <a class="mini-link" href="https://arxiv.org/abs/2503.05534" target="_blank" rel="noreferrer" data-i18n="paper">Paper</a>
+            <a class="mini-link" href="https://github.com/CAMMA-public/S4M" target="_blank" rel="noreferrer" data-i18n="code">Code</a>
+            <span class="stars" data-repo-stars="CAMMA-public/S4M">★ —</span>
           </div>
         </article>
 
         <article class="card">
-          <h3>Fast video labeling</h3>
-          <p>On-the-fly point annotation for faster medical video dataset creation.</p>
+          <h3 data-i18n="fastTitle">Fast video labeling</h3>
+          <p data-i18n="fastText">On-the-fly point annotation for faster medical video dataset creation.</p>
           <div class="card-links">
-            <a class="mini-link" href="https://pubmed.ncbi.nlm.nih.gov/38573565/" target="_blank" rel="noreferrer">Paper</a>
+            <a class="mini-link" href="https://pubmed.ncbi.nlm.nih.gov/38573565/" target="_blank" rel="noreferrer" data-i18n="paper">Paper</a>
           </div>
         </article>
       </div>
@@ -506,49 +708,48 @@
 
     <section id="background">
       <div class="section-head">
-        <h2>Background</h2>
-        <p>PhD work, engineering experience, and education behind the research projects above.</p>
+        <h2 data-i18n="backgroundTitle">Background</h2>
+        <p data-i18n="backgroundIntro">PhD work, engineering experience, and education behind the research projects above.</p>
       </div>
 
       <div class="split">
         <article class="card list">
           <div class="item">
             <small>2022 — Present</small>
-            <strong>PhD student</strong>
-            <span>Deep learning for ultrasound imaging, segmentation, and medical annotation workflows.</span>
+            <strong data-i18n="phdTitle">PhD student</strong>
+            <span data-i18n="phdText">Deep learning for ultrasound imaging, segmentation, and medical annotation workflows.</span>
           </div>
           <div class="item">
             <small>2020 — 2022</small>
-            <strong>Research engineer</strong>
-            <span>Institut hospitalo-universitaire, Strasbourg · Deep learning for pancreatic and adrenal lesion analysis in endoscopic ultrasound.</span>
+            <strong data-i18n="engineerTitle">Research engineer</strong>
+            <span data-i18n="engineerText">Institut hospitalo-universitaire, Strasbourg · Deep learning for pancreatic and adrenal lesion analysis in endoscopic ultrasound.</span>
           </div>
         </article>
 
         <article class="card list">
           <div class="item">
             <small>2018 — 2020</small>
-            <strong>Master’s degree in Computer Science</strong>
-            <span>Data Science and Complex Systems · Université de Strasbourg · Graduated with honors.</span>
+            <strong data-i18n="masterTitle">Master’s degree in Computer Science</strong>
+            <span data-i18n="masterText">Data Science and Complex Systems · Université de Strasbourg · Graduated with honors.</span>
           </div>
           <div class="item">
             <small>2015 — 2018</small>
-            <strong>Bachelor’s degree in Mathematics and Computer Science</strong>
-            <span>Université de Strasbourg · Science, technology and health track.</span>
+            <strong data-i18n="bachelorTitle">Bachelor’s degree in Mathematics and Computer Science</strong>
+            <span data-i18n="bachelorText">Université de Strasbourg · Science, technology and health track.</span>
           </div>
         </article>
       </div>
 
       <article class="card" style="margin-top:16px">
-        <h3>Skills</h3>
+        <h3 data-i18n="skillsTitle">Skills</h3>
         <div class="skills">
           <span class="skill">Python</span>
           <span class="skill">PyTorch</span>
-          <span class="skill">TensorFlow</span>
-          <span class="skill">Keras</span>
+          <span class="skill">MMDetection</span>
           <span class="skill">scikit-learn</span>
           <span class="skill">Pandas</span>
-          <span class="skill">C++</span>
           <span class="skill">Git</span>
+          <span class="skill">Scientific writing</span>
         </div>
       </article>
     </section>
@@ -556,8 +757,8 @@
     <section id="contact">
       <div class="contact-card">
         <div>
-          <h2>Contact</h2>
-          <p>For research questions, collaborations, or code-related discussions.</p>
+          <h2 data-i18n="contactTitle">Contact</h2>
+          <p data-i18n="contactIntro">For research questions, collaborations, or code-related discussions.</p>
         </div>
         <div class="actions">
           <a class="btn primary" href="mailto:ameyer1@unistra.fr">ameyer1@unistra.fr</a>
@@ -569,11 +770,151 @@
   </main>
 
   <footer class="wrap">
-    © <span id="year"></span> Adrien Meyer. Built with GitHub Pages.
+    © <span id="year"></span> Adrien Meyer. <span data-i18n="footer">Built with GitHub Pages.</span>
   </footer>
 
   <script>
+    const translations = {
+      en: {
+        navWork: "Work",
+        navNews: "News",
+        navBackground: "Background",
+        navContact: "Contact",
+        tagline: "Medical imaging · Deep learning · Ultrasound",
+        title: "Deep learning for <span class=\"accent-text\">ultrasound</span> imaging.",
+        lead: "I am Adrien Meyer, a PhD student focused on segmentation, annotation, and foundation models for practical clinical imaging workflows.",
+        email: "Email",
+        downloadCv: "Download CV",
+        portrait: "PhD student · Medical imaging AI",
+        newsTitle: "News",
+        newsItemTitle: "S4M at IPCAI 2026",
+        newsItemText: "S4M will be presented at IPCAI 2026 in Japan — let’s chat there!",
+        workTitle: "Selected work",
+        workIntro: "Open research on ultrasound segmentation, promptable models, and faster annotation.",
+        ultrasamText: "Foundation model for ultrasound segmentation using large open-access datasets.",
+        s4mText: "Prompting SAM like a sonographer.",
+        fastTitle: "Fast video labeling",
+        fastText: "On-the-fly point annotation for faster medical video dataset creation.",
+        paper: "Paper",
+        code: "Code",
+        labelPreprint: "Preprint",
+        labelCodeAvailable: "Code available",
+        labelAnnotation: "Annotation",
+        backgroundTitle: "Background",
+        backgroundIntro: "PhD work, engineering experience, and education behind the research projects above.",
+        phdTitle: "PhD student",
+        phdText: "Deep learning for ultrasound imaging, segmentation, and medical annotation workflows.",
+        engineerTitle: "Research engineer",
+        engineerText: "Institut hospitalo-universitaire, Strasbourg · Deep learning for pancreatic and adrenal lesion analysis in endoscopic ultrasound.",
+        masterTitle: "Master’s degree in Computer Science",
+        masterText: "Data Science and Complex Systems · Université de Strasbourg · Graduated with honors.",
+        bachelorTitle: "Bachelor’s degree in Mathematics and Computer Science",
+        bachelorText: "Université de Strasbourg · Science, technology and health track.",
+        skillsTitle: "Skills",
+        contactTitle: "Contact",
+        contactIntro: "For research questions, collaborations, or code-related discussions.",
+        footer: "Built with GitHub Pages."
+      },
+      fr: {
+        navWork: "Travaux",
+        navNews: "Actualités",
+        navBackground: "Parcours",
+        navContact: "Contact",
+        tagline: "Imagerie médicale · Deep learning · Échographie",
+        title: "Deep learning pour l’imagerie <span class=\"accent-text\">échographique</span>.",
+        lead: "Je suis Adrien Meyer, doctorant travaillant sur la segmentation, l’annotation et les modèles fondation pour des workflows d’imagerie clinique.",
+        email: "Email",
+        downloadCv: "Télécharger le CV",
+        portrait: "Doctorant · IA pour l’imagerie médicale",
+        newsTitle: "Actualités",
+        newsItemTitle: "S4M à IPCAI 2026",
+        newsItemText: "S4M sera présenté à IPCAI 2026 au Japon — discutons-en là-bas !",
+        workTitle: "Travaux sélectionnés",
+        workIntro: "Recherche ouverte sur la segmentation échographique, les modèles promptables et l’annotation rapide.",
+        ultrasamText: "Modèle fondation pour la segmentation échographique à partir de larges jeux de données ouverts.",
+        s4mText: "Prompter SAM comme un échographiste.",
+        fastTitle: "Annotation vidéo rapide",
+        fastText: "Annotation de points à la volée pour accélérer la création de jeux de données vidéo médicaux.",
+        paper: "Article",
+        code: "Code",
+        labelPreprint: "Prépublication",
+        labelCodeAvailable: "Code disponible",
+        labelAnnotation: "Annotation",
+        backgroundTitle: "Parcours",
+        backgroundIntro: "Doctorat, expérience d’ingénierie et formation derrière les travaux de recherche ci-dessus.",
+        phdTitle: "Doctorant",
+        phdText: "Deep learning pour l’imagerie échographique, la segmentation et les workflows d’annotation médicale.",
+        engineerTitle: "Ingénieur de recherche",
+        engineerText: "Institut hospitalo-universitaire, Strasbourg · Deep learning pour l’analyse de lésions pancréatiques et surrénaliennes en écho-endoscopie.",
+        masterTitle: "Master en informatique",
+        masterText: "Science des données et systèmes complexes · Université de Strasbourg · Mention bien.",
+        bachelorTitle: "Licence en mathématiques et informatique",
+        bachelorText: "Université de Strasbourg · Parcours science, technologie et santé.",
+        skillsTitle: "Compétences",
+        contactTitle: "Contact",
+        contactIntro: "Pour les questions de recherche, collaborations ou échanges autour du code.",
+        footer: "Construit avec GitHub Pages."
+      }
+    };
+
+    const root = document.documentElement;
+    const themeToggle = document.getElementById("themeToggle");
+    const langToggle = document.getElementById("langToggle");
+
+    function setTheme(theme) {
+      root.dataset.theme = theme;
+      localStorage.setItem("theme", theme);
+      themeToggle.setAttribute("aria-pressed", theme === "dark");
+      themeToggle.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+    }
+
+    function setLanguage(lang) {
+      root.lang = lang;
+      root.dataset.lang = lang;
+      localStorage.setItem("lang", lang);
+      langToggle.setAttribute("aria-pressed", lang === "fr");
+      langToggle.setAttribute("aria-label", lang === "fr" ? "Switch to English" : "Passer en français");
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.dataset.i18n;
+        el.textContent = translations[lang][key];
+      });
+
+      document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+        const key = el.dataset.i18nHtml;
+        el.innerHTML = translations[lang][key];
+      });
+    }
+
+    themeToggle.addEventListener("click", () => {
+      setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+    });
+
+    langToggle.addEventListener("click", () => {
+      setLanguage(root.lang === "fr" ? "en" : "fr");
+    });
+
+    async function loadRepoStars() {
+      const badges = document.querySelectorAll("[data-repo-stars]");
+
+      await Promise.all([...badges].map(async (badge) => {
+        const repo = badge.dataset.repoStars;
+
+        try {
+          const response = await fetch(`https://api.github.com/repos/${repo}`);
+          if (!response.ok) throw new Error("GitHub API error");
+          const data = await response.json();
+          badge.textContent = `★ ${data.stargazers_count}`;
+        } catch {
+          badge.textContent = "★ GitHub";
+        }
+      }));
+    }
+
     document.getElementById("year").textContent = new Date().getFullYear();
+    setTheme(localStorage.getItem("theme") || "light");
+    setLanguage(localStorage.getItem("lang") || "en");
+    loadRepoStars();
   </script>
 </body>
 </html>
